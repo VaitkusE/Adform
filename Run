@@ -1,0 +1,170 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Squares_API
+{
+    internal class Run : Tests
+    {
+        static String input ="";
+        static readonly string[] commands = { "ImportList", "AddPoint", "DeletePoint", "RetrieveIdentifiedSquares", "exit", "PrintPointsList",
+                "stop", "help",
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        static void Main()
+        {
+            ListOfPoints list = new(new HashSet<int[]> { });
+
+            bool run = true;
+
+            bool executed = false;
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Edgaras Vaitkus SquareAPI task for ADFORM \n");
+            Console.ResetColor();
+            Console.WriteLine("Info: Points list currently contains 0 entries.\nProgram does not add points which are already in it (no duplicate points).");
+            Console.WriteLine("Automated test commands are called from a different constructor and does not conflict with user input.");
+            Console.WriteLine("To execute a command, enter a command or a number associated with it from the list");
+            PrintAvailableCommands();
+
+            while (run)
+            {
+                Console.Write("\nEnter command:");
+                input = Console.ReadLine();
+                Console.WriteLine();
+
+                if (input == "ImportList" || input == "1")
+                {
+                    Console.WriteLine("Input point coordinates in a format (int) space (int) and press Enter." +
+                        "\nIf you have entered all points enter 'stop' to terminate input process."
+                        + "\nExample:\n1 1 (enter)\n1 2 (enter)\nstop");
+
+                    Console.WriteLine("\nEnter your points: ");
+
+                    while (input != "stop")
+                    {
+                        input = Console.ReadLine();
+                        if (input != "stop")
+                        {
+                            try
+                            {
+                                string[] points = input.Split(" ");
+                                list.AddPoint(new int[] { Int32.Parse(points[0]), Int32.Parse(points[1]) });
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Input format is incorrect. Please use -int (space) int. Or enter 'stop'");
+                            }
+                        }
+                    }
+                    Console.WriteLine("List of points imported successfully.");
+                }
+                if (input == "AddPoint" || input == "2")
+                {
+                    Console.WriteLine("Input point coordinates in a format (int) space (int) and press Enter.");
+                    input = Console.ReadLine();
+                    
+                    try
+                    {
+                        string[] points = input.Split(" ");
+                        list.AddPoint(new int[] { Int32.Parse(points[0]), Int32.Parse(points[1]) });
+                        Console.WriteLine("Point added successfully.");
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Input format is incorrect. Please use -int (space) int.");
+                    }
+                    executed = true;
+                }
+                if (input == "DeletePoint" || input == "3")
+                {
+                    Console.WriteLine("Input point coordinates in a format (int) space (int) and press Enter.");
+                    input = Console.ReadLine();
+                    try
+                    {
+                        string[] points = input.Split(" ");
+                        bool deleted = false;
+
+                        foreach (var item in list.GetList())
+                        {
+                            if (item[0] == Int32.Parse(points[0]) && item[1] == Int32.Parse(points[1]))
+                            {
+                                list.DeletePoint(item);
+                                Console.WriteLine("Point removed successfully.");
+                                deleted = true;
+                            }
+                        }
+                        if (!deleted)
+                        {
+                            Console.WriteLine("Point is not in the list.");
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Input format is incorrect. Please use -int (space) int.");
+                    }
+                    executed = true;
+                }
+                if (input == "RetrieveIdentifiedSquares" || input == "4")
+                {
+                    list.IdentifySquares();
+
+                    PrintSquareLists(list.GetSquarePointLists());
+                }
+
+
+                if (input == "PrintPointsList" || input == "5")
+                {
+                    Console.WriteLine("List of points: ");
+                    PrintList(list.GetList());
+
+                    PrintSquareLists(list.GetSquarePointLists());
+                }
+
+                if (input == "AutoTestAddPoint" || input == "6")
+                {
+                    TestAddPointFunction();
+                }
+                if (input == "AutoTestDeletePoint" || input == "7")
+                {
+                    TestDeletePointFunction();
+                }
+                if (input == "AutoTestFindSquares" || input == "8")
+                {
+                   TestFindingSquaresInBigList();
+                }
+
+                if (input == "CommandList" || input == "9")
+                {
+                    PrintAvailableCommands();
+                }
+
+                if (input == "exit" || input == "10")
+                {
+                    run = false;
+                }
+                if (!commands.Contains(input) && !executed)
+                {
+                    Console.WriteLine("Command unkown. Type 'Help' for a list of commands.");
+                }
+
+            }
+        }
+        public static void PrintAvailableCommands()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nAvailable commands from functional requirements:");
+            Console.ResetColor();
+            Console.WriteLine("\nImportList (1)" + "\nAddPoint (2)" + "\nDeletePoint (3)" + "\nRetrieveIdentifiedSquares (4)");
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nAdditional commands:");
+            Console.ResetColor();
+            Console.WriteLine("\nPrintPointsList (5)" + "\nAutoTestAddPoint (6)" + "\nAutoTestDeletePoint (7)" +
+               "\nAutoTestFindSquares (8)" + "\nCommandList (9)" + "\nexit (10)");
+        }
+      
+        
+    }
+}
