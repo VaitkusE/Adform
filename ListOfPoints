@@ -1,0 +1,127 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Squares_API
+{
+    class ListOfPoints : Squares
+    {
+        public HashSet<int[]> list;
+        public List<HashSet<int[]>> squarePointLists;
+        public ListOfPoints(HashSet<int[]> list)
+        {
+            this.list = list;
+            squarePointLists = new List<HashSet<int[]>>();
+        }
+        public HashSet<int[]> GetList()
+        {
+            return this.list;
+        }
+
+        public void SetList(HashSet<int[]> list)
+        {
+            this.list = list;
+        }
+        public List<HashSet<int[]>> GetSquarePointLists()
+        {
+            return this.squarePointLists;
+        }
+        internal void SetSquarePointLists(List<HashSet<int[]>> list)
+        {
+            this.squarePointLists = list;
+        }
+        public void AddSquarePointsToLists(HashSet<int[]> list)
+        {
+
+            bool added = false;
+            bool[] pointsFound = new bool[4] { false,false,false,false };
+            List<bool> shouldAdd = new();
+            bool addingNew = true;
+            
+
+            if (this.squarePointLists.Count == 0)
+            { 
+                this.squarePointLists.Add(list);
+                added = true;
+            }
+
+
+            List<string> inputList = new();              
+            foreach (var item in list)                  // hashset to list of strings
+            {
+                inputList.Add(item[0].ToString() + " " + item[1].ToString());
+            }
+
+            foreach (var item in this.squarePointLists)
+            {
+                
+                if (added) break;
+
+                List<string> existingList = new();
+                foreach (var hashSet in item)             // hashset to list of strings
+                {
+                    existingList.Add(hashSet[0].ToString() + " " + hashSet[1].ToString());
+                }
+
+                for (int i = 0; i < existingList.Count; i++) 
+                {
+                    if (inputList.Contains(existingList[i]))
+                    {
+                        pointsFound[i] = true;
+                    }
+                }
+
+                for (int i = 0; i < pointsFound.Length; i++) 
+                {
+                    if (!pointsFound[i])
+                    {
+                        shouldAdd.Add(true);
+                        break;
+                    }
+                    else
+                    {
+                        shouldAdd.Add(false);
+                    }
+                }
+            }
+
+            foreach(var item in shouldAdd)
+            {
+                if (item == false)
+                {
+                    addingNew = false;
+                }
+            }
+            if (addingNew && !added)
+            {
+                this.squarePointLists.Add(list);
+            }
+        }
+
+        internal void AddPoint(int[] pointToBeAdded)
+        {
+            this.list.Add(pointToBeAdded);
+        }
+
+        public void ImportPoints(HashSet<int[]> importList)
+        {
+            foreach (var item in importList)
+            {
+                AddPoint(item);
+            }
+        }
+
+        public void DeletePoint(int[] pointToBeDeleted)
+        {
+            list.ExceptWith(new HashSet<int[]> { pointToBeDeleted });
+
+            this.IdentifySquares();
+        }
+        public void IdentifySquares()
+        {
+            SquareExistsInList(this);
+        }
+    }
+}
