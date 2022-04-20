@@ -18,7 +18,7 @@ namespace Squares_API
 
             bool run = true;
 
-            bool executed = false;
+            
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Edgaras Vaitkus SquareAPI task for ADFORM \n");
@@ -30,11 +30,12 @@ namespace Squares_API
 
             while (run)
             {
+                bool executed = false;
                 Console.Write("\nEnter command:");
                 input = Console.ReadLine();
                 Console.WriteLine();
 
-                if (input == "ImportList" || input == "1")
+                if (input == "ImportList" || input == "1" && !executed)
                 {
                     Console.WriteLine("Input point coordinates in a format (int) space (int) and press Enter." +
                         "\nIf you have entered all points enter 'stop' to terminate input process."
@@ -60,9 +61,9 @@ namespace Squares_API
                     }
                     Console.WriteLine("List of points imported successfully.");
                 }
-                if (input == "AddPoint" || input == "2")
+                if (input == "AddPoint" || input == "2" && !executed)
                 {
-                    Console.WriteLine("Input point coordinates in a format (int) space (int) and press Enter.");
+                    Console.WriteLine("Input coordinates of the point you want to add in format [(int) space (int)] and press Enter.");
                     input = Console.ReadLine();
                     
                     try
@@ -77,9 +78,9 @@ namespace Squares_API
                     }
                     executed = true;
                 }
-                if (input == "DeletePoint" || input == "3")
+                if (input == "DeletePoint" || input == "3" && !executed)
                 {
-                    Console.WriteLine("Input point coordinates in a format (int) space (int) and press Enter.");
+                    Console.WriteLine("Input coordinates of the point you want to delete in format [(int) space (int)] and press Enter.");
                     input = Console.ReadLine();
                     try
                     {
@@ -97,7 +98,7 @@ namespace Squares_API
                         }
                         if (!deleted)
                         {
-                            Console.WriteLine("Point is not in the list.");
+                            Console.WriteLine("Point is not in the list. If you want to delete a point again, type 3 and press enter");
                         }
                     }
                     catch
@@ -106,7 +107,7 @@ namespace Squares_API
                     }
                     executed = true;
                 }
-                if (input == "RetrieveIdentifiedSquares" || input == "4")
+                if (input == "RetrieveIdentifiedSquares" || input == "4" && !executed)
                 {
                     list.IdentifySquares();
 
@@ -114,7 +115,7 @@ namespace Squares_API
                 }
 
 
-                if (input == "PrintPointsList" || input == "5")
+                if (input == "PrintPointsList" || input == "5" && !executed)
                 {
                     Console.WriteLine("List of points: ");
                     PrintList(list.GetList());
@@ -122,15 +123,15 @@ namespace Squares_API
                     PrintSquareLists(list.GetSquarePointLists());
                 }
 
-                if (input == "AutoTestAddPoint" || input == "6")
+                if (input == "AutoTestAddPoint" || input == "6" && !executed)
                 {
                     TestAddPointFunction();
                 }
-                if (input == "AutoTestDeletePoint" || input == "7")
+                if (input == "AutoTestDeletePoint" || input == "7" && !executed)
                 {
                     TestDeletePointFunction();
                 }
-                if (input == "AutoTestFindSquares" || input == "8")
+                if (input == "AutoTestFindSquares" || input == "8" && !executed)
                 {
                    TestFindingSquaresInBigList();
                 }
