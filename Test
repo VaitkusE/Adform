@@ -1,0 +1,118 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Squares_API
+{
+    internal class Tests
+    { 
+        public static HashSet<int[]> InstantiateAList()
+        {
+            ListOfPoints list = new(new HashSet<int[]> { GetRandomPoint(), GetRandomPoint()});
+            return list.GetList();
+        }
+
+
+        public static HashSet<int[]> InstantiateABigList()
+        {
+            ListOfPoints list = new(new HashSet<int[]> { });
+            
+            for (int i = 0; i < 18; i++)
+            {
+                list.AddPoint(GetRandomPoint());
+            }
+            return list.GetList();
+        }
+        public static void PrintList(HashSet<int[]> list)
+        {
+            if (list.Count == 0)
+            {
+                Console.WriteLine("Empty\n");
+            }
+            else
+            {
+                foreach (var item in list)
+                {
+                    Console.Write("({0};{1})", item[0], item[1]);
+                }
+            Console.WriteLine("\n");
+            }
+        }
+        public static void PrintSquareLists(List<HashSet<int[]>> list)
+        {
+            
+            if(list.Count == 0)
+            {
+                Console.WriteLine("No squares in list");
+            }
+            else
+            {
+                Console.WriteLine("Square lists: ");
+                foreach (var item in list)
+                {
+                    if (item.SetEquals(new HashSet<int[]> { }))
+                    {
+                        Console.WriteLine("empty");
+                    }
+                    PrintList(item);
+                }
+            }
+        }
+
+        public static int[] GetRandomPoint()
+        {
+            Random rnd = new();
+            return new int[2] { rnd.Next(1, 9), rnd.Next(1, 9) };
+        }
+
+        public static void TestAddPointFunction()
+        {
+            ListOfPoints test = new(InstantiateAList());
+
+            Console.WriteLine("Automatically generated list of points: \n");
+            PrintList(test.GetList());
+
+            test.AddPoint(GetRandomPoint());
+
+            Console.WriteLine("Random point added \n");
+
+            PrintList(test.GetList());
+
+        }
+        public static void TestDeletePointFunction()
+        {
+            
+            ListOfPoints test = new(InstantiateAList());
+            Random rnd = new();
+
+            Console.WriteLine("Automatically generated list of points: \n");
+            PrintList(test.GetList());
+            
+
+            int[] chosenPoint = test.GetList().ElementAt(rnd.Next(test.GetList().Count));
+
+            Console.WriteLine("Point ({0};{1}) removed \n", chosenPoint[0], chosenPoint[1] );
+            Console.WriteLine("List of points after action: \n");
+
+            test.DeletePoint(chosenPoint);
+
+            PrintList(test.GetList());
+        }
+
+
+        public static void TestFindingSquaresInBigList()
+        {
+            ListOfPoints test = new(InstantiateABigList());
+
+            Console.WriteLine("Automatically generated list of points: \n");
+            PrintList(test.GetList());
+
+            test.IdentifySquares();
+
+            PrintSquareLists(test.GetSquarePointLists());
+        }
+        
+    }
+}
