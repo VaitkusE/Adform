@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Squares_API
 {
-    class ListOfPoints : Squares//, ISquares
+    class ListOfPoints : Squares
     {
         public HashSet<int[]> list;
         public List<HashSet<int[]>> squarePointLists;
