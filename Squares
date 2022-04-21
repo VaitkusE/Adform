@@ -8,9 +8,10 @@ namespace Squares_API
 {
       class Squares
     {
-        List<int[]> list;
-        public void SquareExistsInList(ListOfPoints key)
+        
+        public static void SquareExistsInList(ListOfPoints key)
         {
+            List<int[]> list;
             key.squarePointLists.Clear();
 
             list = key.GetList().ToList();
