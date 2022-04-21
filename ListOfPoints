@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Squares_API
 {
-    class ListOfPoints : Squares
+    class ListOfPoints : Squares//, ISquares
     {
         public HashSet<int[]> list;
         public List<HashSet<int[]>> squarePointLists;
         public ListOfPoints(HashSet<int[]> list)
         {
             this.list = list;
-            squarePointLists = new List<HashSet<int[]>>();
+            this.squarePointLists = new List<HashSet<int[]>>();
         }
         public HashSet<int[]> GetList()
         {
@@ -40,13 +40,11 @@ namespace Squares_API
             List<bool> shouldAdd = new();
             bool addingNew = true;
             
-
             if (this.squarePointLists.Count == 0)
             { 
                 this.squarePointLists.Add(list);
                 added = true;
             }
-
 
             List<string> inputList = new();              
             foreach (var item in list)                  // hashset to list of strings
@@ -56,7 +54,6 @@ namespace Squares_API
 
             foreach (var item in this.squarePointLists)
             {
-                
                 if (added) break;
 
                 List<string> existingList = new();
